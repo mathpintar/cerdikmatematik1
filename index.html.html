@@ -1,0 +1,2183 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CERDIK MATEMATIK</title>
+  <style>
+    :root {
+      --bg1: #f7fbff;
+      --bg2: #eef7ff;
+      --card: rgba(255,255,255,0.92);
+      --text: #1f2d3d;
+      --muted: #6b7a90;
+      --primary: #5b8def;
+      --primary-dark: #3f6ed3;
+      --accent: #ffb703;
+      --accent-2: #ff7aa2;
+      --success: #25c281;
+      --danger: #ff5d73;
+      --violet: #8b7cff;
+      --teal: #22c7c7;
+      --shadow: 0 10px 30px rgba(44, 82, 130, 0.14);
+      --radius: 22px;
+      --radius-sm: 14px;
+      --key-size: 68px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: "Trebuchet MS", "Segoe UI", Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, #dff4ff 0%, transparent 30%),
+        radial-gradient(circle at top right, #ffe8f0 0%, transparent 30%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      color: var(--text);
+      min-height: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+    }
+
+    .app {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 16px 16px 120px;
+    }
+
+    .topbar {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-badge {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--primary), var(--violet));
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: clamp(1.35rem, 3vw, 2rem);
+      line-height: 1.05;
+      letter-spacing: 0.3px;
+    }
+
+    .brand p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .chip-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      background: rgba(255,255,255,0.9);
+      border: 2px solid #e4edff;
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 700;
+      box-shadow: 0 6px 16px rgba(91,141,239,0.08);
+    }
+
+    .screen {
+      display: none;
+      animation: fadeIn 0.35s ease;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .grid.two {
+      grid-template-columns: 1.1fr 0.9fr;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.8);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      backdrop-filter: blur(10px);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .hero-left h2 {
+      margin: 4px 0 10px;
+      font-size: clamp(1.6rem, 4vw, 2.5rem);
+      line-height: 1.1;
+    }
+
+    .hero-left p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.55;
+    }
+
+    .hero-bullets {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .hero-bullet {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      background: #f7fbff;
+      border-radius: 16px;
+      padding: 12px 14px;
+      border: 1px solid #e6f0ff;
+    }
+
+    .hero-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+      color: white;
+      flex: 0 0 auto;
+      background: linear-gradient(135deg, var(--accent), #ff8a00);
+    }
+
+    .hero-right {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .mini-stat {
+      padding: 16px;
+      border-radius: 18px;
+      color: white;
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow);
+    }
+
+    .mini-stat:nth-child(1) { background: linear-gradient(135deg, #5b8def, #7ea8ff); }
+    .mini-stat:nth-child(2) { background: linear-gradient(135deg, #ff7aa2, #ff9abc); }
+    .mini-stat:nth-child(3) { background: linear-gradient(135deg, #25c281, #52d89f); }
+    .mini-stat:nth-child(4) { background: linear-gradient(135deg, #8b7cff, #a496ff); }
+
+    .mini-stat .big {
+      font-size: 1.6rem;
+      font-weight: 800;
+    }
+
+    .section-title {
+      margin: 0 0 12px;
+      font-size: 1.2rem;
+    }
+
+    .option-group {
+      display: grid;
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .label {
+      font-weight: 800;
+      margin-bottom: 8px;
+      display: block;
+      font-size: 1rem;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .select-btn, .primary-btn, .ghost-btn {
+      border: none;
+      cursor: pointer;
+      border-radius: 16px;
+      padding: 14px 16px;
+      font-weight: 800;
+      font-size: 1rem;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
+    }
+
+    .select-btn {
+      background: #f4f8ff;
+      color: var(--text);
+      border: 2px solid #dde8ff;
+      min-width: 110px;
+      box-shadow: 0 6px 16px rgba(91,141,239,0.08);
+    }
+
+    .select-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--violet));
+      color: white;
+      border-color: transparent;
+    }
+
+    .select-btn:hover, .primary-btn:hover, .ghost-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, var(--accent), #ff8a00);
+      color: white;
+      box-shadow: 0 12px 24px rgba(255,183,3,0.28);
+      width: 100%;
+      padding: 16px 20px;
+      font-size: 1.08rem;
+    }
+
+    .ghost-btn {
+      background: white;
+      color: var(--primary);
+      border: 2px solid #d9e6ff;
+    }
+
+    .quiz-header {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .status-badges {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .status-badge {
+      background: white;
+      border: 2px solid #e5efff;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .progress-wrap {
+      background: #e9f1ff;
+      border-radius: 999px;
+      height: 18px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--teal), var(--primary), var(--violet));
+      transition: width 0.25s ease;
+    }
+
+    .question-layout {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .question-card {
+      min-height: 480px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .question-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .question-title {
+      margin: 0;
+      font-size: 1.3rem;
+    }
+
+    .subtle {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .operation-pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: white;
+      font-weight: 800;
+      font-size: 0.95rem;
+    }
+
+    .op-add { background: linear-gradient(135deg, #25c281, #55dba3); }
+    .op-sub { background: linear-gradient(135deg, #ff7aa2, #ff9abc); }
+    .op-mul { background: linear-gradient(135deg, #8b7cff, #a496ff); }
+    .op-div { background: linear-gradient(135deg, #5b8def, #7ea8ff); }
+
+    .math-stage {
+      margin-top: 8px;
+      display: grid;
+      place-items: center;
+      min-height: 340px;
+      padding: 16px 6px;
+    }
+
+    .feedback-banner {
+      position: absolute;
+      inset: 0;
+      display: none;
+      place-items: center;
+      background: rgba(255,255,255,0.65);
+      backdrop-filter: blur(3px);
+      z-index: 4;
+    }
+
+    .feedback-banner.show {
+      display: grid;
+      animation: pop 0.35s ease;
+    }
+
+    .feedback-box {
+      padding: 22px 26px;
+      border-radius: 22px;
+      color: white;
+      font-size: 1.6rem;
+      font-weight: 900;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .feedback-correct { background: linear-gradient(135deg, #25c281, #52d89f); }
+    .feedback-wrong { background: linear-gradient(135deg, #ff5d73, #ff7f90); }
+
+    .vertical-math {
+      display: inline-grid;
+      grid-template-columns: auto;
+      gap: 2px;
+      font-family: "Courier New", monospace;
+      color: #20314d;
+      user-select: none;
+    }
+
+    .carry-row, .num-row, .answer-row {
+      display: grid;
+      justify-content: end;
+      gap: 4px;
+    }
+
+    .digit, .answer-box, .tiny-box {
+      width: 52px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      font-size: 2rem;
+      font-weight: 900;
+      position: relative;
+    }
+
+    .digit {
+      background: #f5f8ff;
+      border: 2px solid #e4edff;
+    }
+
+    .digit.operator-digit {
+      background: #fff5e7;
+      border-color: #ffe0a3;
+      color: #c77800;
+    }
+
+    .digit.borrowed {
+      background: #fff1f4;
+      border-color: #ffc2d0;
+    }
+
+    .digit.crossed::after {
+      content: "";
+      position: absolute;
+      width: 90%;
+      height: 3px;
+      background: #ff5d73;
+      transform: rotate(-18deg);
+      border-radius: 999px;
+    }
+
+    .tiny-box {
+      width: 26px;
+      height: 24px;
+      font-size: 0.95rem;
+      background: #fff7d8;
+      border: 2px solid #ffe08a;
+      color: #9b6a00;
+      justify-self: center;
+    }
+
+    .tiny-box.empty {
+      opacity: 0.15;
+    }
+
+    .line-row {
+      height: 6px;
+      background: linear-gradient(90deg, #91b5ff, #8b7cff);
+      border-radius: 999px;
+      margin: 6px 0;
+    }
+
+    .answer-box {
+      background: white;
+      border: 3px dashed #b8cafc;
+      color: #1f2d3d;
+    }
+
+    .answer-box.active {
+      border-style: solid;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 5px rgba(255,183,3,0.18);
+      transform: scale(1.03);
+    }
+
+    .answer-box.filled {
+      border-style: solid;
+      border-color: #8fd1b5;
+      background: #f1fff7;
+    }
+
+    .answer-box.locked {
+      background: #f8fbff;
+    }
+
+    .right-to-left-note {
+      margin-top: 14px;
+      background: #fff8e8;
+      color: #8a5a00;
+      border: 2px solid #ffe0a3;
+      padding: 12px 14px;
+      border-radius: 14px;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .help-box {
+      margin-top: 14px;
+      background: #f5f9ff;
+      border: 2px solid #e2ecff;
+      border-radius: 16px;
+      padding: 12px 14px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .keyboard-card {
+      position: sticky;
+      top: 12px;
+    }
+
+    .screen-display {
+      background: linear-gradient(135deg, #20314d, #2d466c);
+      color: white;
+      border-radius: 18px;
+      padding: 14px;
+      min-height: 90px;
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.06);
+      margin-bottom: 12px;
+    }
+
+    .screen-display .small {
+      color: #c6d5f3;
+      font-size: 0.92rem;
+      margin-bottom: 6px;
+    }
+
+    .screen-display .big {
+      font-size: 2rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      min-height: 42px;
+    }
+
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .key {
+      height: var(--key-size);
+      border: none;
+      border-radius: 20px;
+      font-size: 1.45rem;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 10px 18px rgba(91,141,239,0.12);
+      transition: transform 0.12s ease, filter 0.15s ease;
+      color: #20314d;
+      background: white;
+    }
+
+    .key:hover { transform: translateY(-2px); }
+    .key:active { transform: scale(0.97); }
+
+    .key.num:nth-child(1),
+    .key.num:nth-child(2),
+    .key.num:nth-child(3) { background: #eef5ff; }
+    .key.num:nth-child(4),
+    .key.num:nth-child(5),
+    .key.num:nth-child(6) { background: #f2f7ff; }
+    .key.num:nth-child(7),
+    .key.num:nth-child(8),
+    .key.num:nth-child(9) { background: #eefbff; }
+
+    .key.delete {
+      background: #fff0f3;
+      color: #c23d57;
+    }
+
+    .key.zero {
+      background: #f6f8ff;
+    }
+
+    .key.submit {
+      background: linear-gradient(135deg, var(--accent), #ff8a00);
+      color: white;
+    }
+
+    .division-wrap {
+      width: min(100%, 500px);
+      margin: 0 auto;
+      font-family: "Courier New", monospace;
+      color: #20314d;
+    }
+
+    .division-top-answer {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 10px;
+      gap: 6px;
+    }
+
+    .division-bracket-area {
+      display: grid;
+      grid-template-columns: 72px auto;
+      align-items: start;
+      gap: 0;
+    }
+
+    .division-divisor {
+      height: 80px;
+      display: flex;
+      align-items: end;
+      justify-content: center;
+      padding-bottom: 14px;
+      font-size: 2.2rem;
+      font-weight: 900;
+    }
+
+    .division-dividend-box {
+      position: relative;
+      border-top: 5px solid #20314d;
+      border-left: 5px solid #20314d;
+      min-height: 84px;
+      padding: 10px 0 0 12px;
+      border-top-left-radius: 14px;
+    }
+
+    .division-digits {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: nowrap;
+    }
+
+    .division-digit {
+      width: 48px;
+      height: 58px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: #f5f8ff;
+      border: 2px solid #e4edff;
+      font-size: 2rem;
+      font-weight: 900;
+      position: relative;
+    }
+
+    .division-step-area {
+      margin-top: 12px;
+      padding-left: 84px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .division-step-card {
+      background: #f8fbff;
+      border: 2px solid #e4edff;
+      border-radius: 16px;
+      padding: 12px;
+    }
+
+    .division-step-title {
+      font-weight: 900;
+      color: #38527c;
+      margin-bottom: 10px;
+    }
+
+    .step-box-row {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .step-input-box {
+      width: 58px;
+      height: 62px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      font-size: 1.8rem;
+      font-weight: 900;
+      border: 3px dashed #b8cafc;
+      background: white;
+    }
+
+    .step-input-box.active {
+      border-style: solid;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 5px rgba(255,183,3,0.18);
+    }
+
+    .step-input-box.filled {
+      border-style: solid;
+      background: #f1fff7;
+      border-color: #8fd1b5;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .result-stat {
+      border-radius: 20px;
+      padding: 16px;
+      color: white;
+      box-shadow: var(--shadow);
+    }
+
+    .result-stat:nth-child(1) { background: linear-gradient(135deg, #25c281, #52d89f); }
+    .result-stat:nth-child(2) { background: linear-gradient(135deg, #ff5d73, #ff8696); }
+    .result-stat:nth-child(3) { background: linear-gradient(135deg, #5b8def, #7ea8ff); }
+    .result-stat:nth-child(4) { background: linear-gradient(135deg, #8b7cff, #a496ff); }
+
+    .result-stat .label-sm {
+      font-size: 0.95rem;
+      opacity: 0.95;
+    }
+
+    .result-stat .value {
+      font-size: 2rem;
+      font-weight: 900;
+      margin-top: 4px;
+    }
+
+    .motivation {
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: 18px;
+      background: #fff9eb;
+      border: 2px solid #ffe2a9;
+      color: #8a5a00;
+      font-size: 1.08rem;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .footer-note {
+      margin-top: 16px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    .confetti {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .confetti span {
+      position: absolute;
+      width: 12px;
+      height: 18px;
+      border-radius: 4px;
+      animation: confettiFall 900ms linear forwards;
+      opacity: 0.9;
+    }
+
+    .pulse {
+      animation: pulse 0.8s ease;
+    }
+
+    .float-up {
+      animation: floatUp 0.5s ease;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pop {
+      0% { opacity: 0; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      35% { transform: scale(1.04); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(8px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes confettiFall {
+      0% {
+        transform: translateY(-20px) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(320px) rotate(540deg);
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 920px) {
+      .hero,
+      .grid.two,
+      .question-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .keyboard-card {
+        position: static;
+      }
+
+      .question-card {
+        min-height: auto;
+      }
+
+      .result-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .app {
+        padding: 12px 12px 110px;
+      }
+
+      .card {
+        padding: 14px;
+        border-radius: 18px;
+      }
+
+      .hero-right {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .digit, .answer-box {
+        width: 42px;
+        height: 50px;
+        font-size: 1.6rem;
+      }
+
+      .tiny-box {
+        width: 22px;
+        height: 20px;
+        font-size: 0.8rem;
+      }
+
+      .division-digit,
+      .step-input-box {
+        width: 44px;
+        height: 52px;
+        font-size: 1.55rem;
+      }
+
+      :root {
+        --key-size: 62px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="topbar">
+      <div class="brand">
+        <div class="brand-badge">🧠</div>
+        <div>
+          <h1>CERDIK MATEMATIK</h1>
+          <p>Latihan matematik sekolah rendah yang ceria, pantas dan interaktif.</p>
+        </div>
+      </div>
+      <div class="chip-row">
+        <div class="chip">📱 Mobile Friendly</div>
+        <div class="chip">⚡ Pantas</div>
+        <div class="chip">🎯 Tanpa Login</div>
+      </div>
+    </div>
+
+    <section id="screen-home" class="screen active">
+      <div class="hero">
+        <div class="card hero-left">
+          <h2>Belajar tambah, tolak, darab dan bahagi dengan cara <span style="color:#5b8def;">seronok</span>.</h2>
+          <p>
+            Aplikasi ini direka khas untuk murid sekolah rendah dengan paparan bentuk lazim,
+            keyboard nombor besar, bantuan visual mengumpul dan meminjam, serta latihan bahagi
+            langkah demi langkah.
+          </p>
+
+          <div class="hero-bullets">
+            <div class="hero-bullet">
+              <div class="hero-icon">➕</div>
+              <div><strong>Tambah & Tolak</strong> dengan input dari kanan ke kiri seperti latihan sebenar.</div>
+            </div>
+            <div class="hero-bullet">
+              <div class="hero-icon" style="background:linear-gradient(135deg,#8b7cff,#a496ff);">✖</div>
+              <div><strong>Darab</strong> dalam bentuk lazim termasuk soalan lebih mencabar.</div>
+            </div>
+            <div class="hero-bullet">
+              <div class="hero-icon" style="background:linear-gradient(135deg,#22c7c7,#5b8def);">➗</div>
+              <div><strong>Bahagi</strong> dengan long division interaktif dan baki jika ada.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="mini-stat">
+            <div>Topik</div>
+            <div class="big">4</div>
+            <div>Tambah, Tolak, Darab, Bahagi</div>
+          </div>
+          <div class="mini-stat">
+            <div>Tahap</div>
+            <div class="big">3</div>
+            <div>Mudah, Sederhana, Pro</div>
+          </div>
+          <div class="mini-stat">
+            <div>Soalan</div>
+            <div class="big">10 / 20 / 50</div>
+            <div>Pilih ikut keselesaan</div>
+          </div>
+          <div class="mini-stat">
+            <div>Mod</div>
+            <div class="big">Interaktif</div>
+            <div>Audio, animasi, progress</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid two" style="margin-top:16px;">
+        <div class="card">
+          <h3 class="section-title">Pilih Latihan</h3>
+
+          <div class="option-group">
+            <div>
+              <span class="label">1. Topik Matematik</span>
+              <div class="btn-row" id="topic-buttons"></div>
+            </div>
+
+            <div>
+              <span class="label">2. Tahap Kesukaran</span>
+              <div class="btn-row" id="difficulty-buttons"></div>
+            </div>
+
+            <div>
+              <span class="label">3. Bilangan Soalan</span>
+              <div class="btn-row" id="count-buttons"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="section-title">Mula Terus Tanpa Login</h3>
+          <p class="subtle">
+            Tiada akaun diperlukan. Pilih topik, tahap dan bilangan soalan, kemudian tekan butang mula.
+          </p>
+
+          <div class="help-box">
+            <strong>Cara menjawab:</strong><br />
+            Untuk <strong>tambah</strong> dan <strong>tolak</strong>, murid akan isi jawapan bermula dari
+            <strong>digit paling kanan</strong> dahulu.<br /><br />
+            Untuk <strong>bahagi</strong>, murid akan isi jawapan langkah demi langkah seperti kaedah bahagi panjang di sekolah.
+          </div>
+
+          <div style="margin-top:16px;">
+            <button class="primary-btn" id="start-btn">🚀 MULA LATIHAN</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-note">
+        Sedia digunakan secara lokal dan sesuai untuk deploy terus ke Netlify.
+      </div>
+    </section>
+
+    <section id="screen-quiz" class="screen">
+      <div class="quiz-header">
+        <div class="status-row">
+          <div class="status-badges">
+            <div class="status-badge" id="badge-topic">Topik: -</div>
+            <div class="status-badge" id="badge-difficulty">Tahap: -</div>
+            <div class="status-badge" id="badge-count">Soalan: -</div>
+          </div>
+          <div class="status-badge" id="badge-timer">⏱ 00:00</div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-bar" id="progress-bar"></div>
+        </div>
+      </div>
+
+      <div class="question-layout">
+        <div class="card question-card">
+          <div class="question-top">
+            <div>
+              <h3 class="question-title" id="question-title">Soalan 1</h3>
+              <div class="subtle" id="question-subtitle">Selesaikan dalam bentuk lazim.</div>
+            </div>
+            <div class="operation-pill op-add" id="operation-pill">Tambah</div>
+          </div>
+
+          <div class="math-stage" id="math-stage"></div>
+
+          <div class="feedback-banner" id="feedback-banner">
+            <div class="feedback-box feedback-correct" id="feedback-box">Hebat!</div>
+          </div>
+
+          <div class="confetti" id="confetti"></div>
+        </div>
+
+        <div class="card keyboard-card">
+          <div class="screen-display">
+            <div class="small">Input Semasa</div>
+            <div class="big" id="input-display">_</div>
+          </div>
+
+          <div class="keypad" id="keypad"></div>
+
+          <div class="help-box" id="live-help">
+            Tekan nombor pada keyboard untuk isi jawapan.
+          </div>
+
+          <div style="display:grid; gap:10px; margin-top:12px;">
+            <button class="ghost-btn" id="restart-btn">↺ Tukar Tetapan</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-result" class="screen">
+      <div class="card">
+        <h2 style="margin:0 0 8px;">Keputusan Latihan</h2>
+        <p class="subtle" id="result-summary">
+          Latihan selesai.
+        </p>
+
+        <div class="result-grid">
+          <div class="result-stat">
+            <div class="label-sm">Jumlah Betul</div>
+            <div class="value" id="result-correct">0</div>
+          </div>
+          <div class="result-stat">
+            <div class="label-sm">Jumlah Salah</div>
+            <div class="value" id="result-wrong">0</div>
+          </div>
+          <div class="result-stat">
+            <div class="label-sm">Peratus</div>
+            <div class="value" id="result-percent">0%</div>
+          </div>
+          <div class="result-stat">
+            <div class="label-sm">Masa</div>
+            <div class="value" id="result-time">00:00</div>
+          </div>
+        </div>
+
+        <div class="motivation" id="motivation-box">Bagus!</div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;">
+          <button class="primary-btn" id="play-again-btn" style="width:auto; min-width:220px;">🎮 Main Lagi</button>
+          <button class="ghost-btn" id="home-btn">🏠 Kembali ke Menu</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    (() => {
+      const TOPICS = [
+        { key: "add", label: "Tambah", icon: "➕", cls: "op-add" },
+        { key: "sub", label: "Tolak", icon: "➖", cls: "op-sub" },
+        { key: "mul", label: "Darab", icon: "✖", cls: "op-mul" },
+        { key: "div", label: "Bahagi", icon: "➗", cls: "op-div" }
+      ];
+
+      const DIFFICULTIES = [
+        { key: "mudah", label: "Mudah" },
+        { key: "sederhana", label: "Sederhana" },
+        { key: "pro", label: "Pro" }
+      ];
+
+      const COUNTS = [10, 20, 50];
+
+      const state = {
+        selection: {
+          topic: "add",
+          difficulty: "mudah",
+          count: 10
+        },
+        session: {
+          questions: [],
+          usedSet: new Set(),
+          currentIndex: 0,
+          correct: 0,
+          wrong: 0,
+          startTime: null,
+          timerId: null,
+          elapsedSec: 0,
+          currentInput: [],
+          currentQuestion: null,
+          currentMode: "rtl",
+          divisionStage: 0,
+          locked: false
+        }
+      };
+
+      const el = {
+        screens: {
+          home: document.getElementById("screen-home"),
+          quiz: document.getElementById("screen-quiz"),
+          result: document.getElementById("screen-result")
+        },
+        topicButtons: document.getElementById("topic-buttons"),
+        difficultyButtons: document.getElementById("difficulty-buttons"),
+        countButtons: document.getElementById("count-buttons"),
+        startBtn: document.getElementById("start-btn"),
+        badgeTopic: document.getElementById("badge-topic"),
+        badgeDifficulty: document.getElementById("badge-difficulty"),
+        badgeCount: document.getElementById("badge-count"),
+        badgeTimer: document.getElementById("badge-timer"),
+        progressBar: document.getElementById("progress-bar"),
+        questionTitle: document.getElementById("question-title"),
+        questionSubtitle: document.getElementById("question-subtitle"),
+        operationPill: document.getElementById("operation-pill"),
+        mathStage: document.getElementById("math-stage"),
+        keypad: document.getElementById("keypad"),
+        inputDisplay: document.getElementById("input-display"),
+        liveHelp: document.getElementById("live-help"),
+        feedbackBanner: document.getElementById("feedback-banner"),
+        feedbackBox: document.getElementById("feedback-box"),
+        confetti: document.getElementById("confetti"),
+        restartBtn: document.getElementById("restart-btn"),
+        resultCorrect: document.getElementById("result-correct"),
+        resultWrong: document.getElementById("result-wrong"),
+        resultPercent: document.getElementById("result-percent"),
+        resultTime: document.getElementById("result-time"),
+        motivationBox: document.getElementById("motivation-box"),
+        resultSummary: document.getElementById("result-summary"),
+        playAgainBtn: document.getElementById("play-again-btn"),
+        homeBtn: document.getElementById("home-btn")
+      };
+
+      function init() {
+        renderSelectionButtons();
+        renderKeypad();
+        bindEvents();
+        updateSelectionUI();
+      }
+
+      function bindEvents() {
+        el.startBtn.addEventListener("click", startSession);
+        el.restartBtn.addEventListener("click", () => {
+          stopTimer();
+          showScreen("home");
+        });
+        el.playAgainBtn.addEventListener("click", () => {
+          showScreen("home");
+        });
+        el.homeBtn.addEventListener("click", () => {
+          showScreen("home");
+        });
+
+        window.addEventListener("keydown", (e) => {
+          if (!el.screens.quiz.classList.contains("active")) return;
+          if (state.session.locked) return;
+          if (/^[0-9]$/.test(e.key)) handleKey(e.key);
+          if (e.key === "Backspace") handleDelete();
+          if (e.key === "Enter") handleSubmit();
+        });
+      }
+
+      function renderSelectionButtons() {
+        el.topicButtons.innerHTML = "";
+        el.difficultyButtons.innerHTML = "";
+        el.countButtons.innerHTML = "";
+
+        TOPICS.forEach(topic => {
+          const btn = document.createElement("button");
+          btn.className = "select-btn";
+          btn.textContent = `${topic.icon} ${topic.label}`;
+          btn.dataset.value = topic.key;
+          btn.addEventListener("click", () => {
+            state.selection.topic = topic.key;
+            updateSelectionUI();
+          });
+          el.topicButtons.appendChild(btn);
+        });
+
+        DIFFICULTIES.forEach(level => {
+          const btn = document.createElement("button");
+          btn.className = "select-btn";
+          btn.textContent = level.label;
+          btn.dataset.value = level.key;
+          btn.addEventListener("click", () => {
+            state.selection.difficulty = level.key;
+            updateSelectionUI();
+          });
+          el.difficultyButtons.appendChild(btn);
+        });
+
+        COUNTS.forEach(count => {
+          const btn = document.createElement("button");
+          btn.className = "select-btn";
+          btn.textContent = `${count} soalan`;
+          btn.dataset.value = String(count);
+          btn.addEventListener("click", () => {
+            state.selection.count = count;
+            updateSelectionUI();
+          });
+          el.countButtons.appendChild(btn);
+        });
+      }
+
+      function updateSelectionUI() {
+        [...el.topicButtons.children].forEach(btn => {
+          btn.classList.toggle("active", btn.dataset.value === state.selection.topic);
+        });
+        [...el.difficultyButtons.children].forEach(btn => {
+          btn.classList.toggle("active", btn.dataset.value === state.selection.difficulty);
+        });
+        [...el.countButtons.children].forEach(btn => {
+          btn.classList.toggle("active", Number(btn.dataset.value) === state.selection.count);
+        });
+      }
+
+      function renderKeypad() {
+        const keys = ["1","2","3","4","5","6","7","8","9","padam","0","submit"];
+        el.keypad.innerHTML = "";
+
+        keys.forEach(k => {
+          const btn = document.createElement("button");
+          btn.className = "key";
+          if (/^\d$/.test(k)) btn.classList.add("num");
+          if (k === "0") btn.classList.add("zero");
+          if (k === "padam") btn.classList.add("delete");
+          if (k === "submit") btn.classList.add("submit");
+
+          btn.textContent = k === "padam" ? "⌫" : (k === "submit" ? "✓" : k);
+          btn.addEventListener("click", () => {
+            if (state.session.locked) return;
+            if (/^\d$/.test(k)) handleKey(k);
+            else if (k === "padam") handleDelete();
+            else handleSubmit();
+          });
+          el.keypad.appendChild(btn);
+        });
+      }
+
+      function showScreen(name) {
+        Object.values(el.screens).forEach(screen => screen.classList.remove("active"));
+        el.screens[name].classList.add("active");
+      }
+
+      function startSession() {
+        resetSession();
+        generateQuestionSet();
+        state.session.startTime = Date.now();
+        startTimer();
+        updateQuizHeader();
+        showScreen("quiz");
+        loadQuestion();
+      }
+
+      function resetSession() {
+        stopTimer();
+        state.session.questions = [];
+        state.session.usedSet = new Set();
+        state.session.currentIndex = 0;
+        state.session.correct = 0;
+        state.session.wrong = 0;
+        state.session.currentInput = [];
+        state.session.currentQuestion = null;
+        state.session.divisionStage = 0;
+        state.session.elapsedSec = 0;
+        state.session.locked = false;
+        updateInputDisplay();
+      }
+
+      function startTimer() {
+        stopTimer();
+        el.badgeTimer.textContent = "⏱ 00:00";
+        state.session.timerId = setInterval(() => {
+          const sec = Math.floor((Date.now() - state.session.startTime) / 1000);
+          state.session.elapsedSec = sec;
+          el.badgeTimer.textContent = `⏱ ${formatTime(sec)}`;
+        }, 1000);
+      }
+
+      function stopTimer() {
+        if (state.session.timerId) {
+          clearInterval(state.session.timerId);
+          state.session.timerId = null;
+        }
+      }
+
+      function updateQuizHeader() {
+        const topic = TOPICS.find(t => t.key === state.selection.topic);
+        el.badgeTopic.textContent = `Topik: ${topic.label}`;
+        el.badgeDifficulty.textContent = `Tahap: ${capitalize(state.selection.difficulty)}`;
+        el.badgeCount.textContent = `Soalan: ${state.selection.count}`;
+      }
+
+      function generateQuestionSet() {
+        while (state.session.questions.length < state.selection.count) {
+          const q = generateUniqueQuestion(state.selection.topic, state.selection.difficulty, state.session.usedSet);
+          state.session.questions.push(q);
+        }
+      }
+
+      function generateUniqueQuestion(topic, difficulty, usedSet) {
+        let q;
+        let key;
+        do {
+          q = generateQuestion(topic, difficulty);
+          key = q.uniqueKey;
+        } while (usedSet.has(key));
+        usedSet.add(key);
+        return q;
+      }
+
+      function generateQuestion(topic, difficulty) {
+        if (topic === "add") return generateAddQuestion(difficulty);
+        if (topic === "sub") return generateSubQuestion(difficulty);
+        if (topic === "mul") return generateMulQuestion(difficulty);
+        return generateDivQuestion(difficulty);
+      }
+
+      function rand(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      function digitsOf(n) {
+        return String(n).split("").map(Number);
+      }
+
+      function padLeftDigits(n, len) {
+        return String(n).padStart(len, " ").split("");
+      }
+
+      function formatTime(sec) {
+        const mm = String(Math.floor(sec / 60)).padStart(2, "0");
+        const ss = String(sec % 60).padStart(2, "0");
+        return `${mm}:${ss}`;
+      }
+
+      function capitalize(s) {
+        return s.charAt(0).toUpperCase() + s.slice(1);
+      }
+
+      function computeCarry(a, b) {
+        const ad = String(a).split("").reverse().map(Number);
+        const bd = String(b).split("").reverse().map(Number);
+        const max = Math.max(ad.length, bd.length);
+        const carries = Array(max).fill("");
+        let c = 0;
+        for (let i = 0; i < max; i++) {
+          const sum = (ad[i] || 0) + (bd[i] || 0) + c;
+          const nextCarry = sum >= 10 ? 1 : 0;
+          carries[i + 1] = nextCarry ? "1" : "";
+          c = nextCarry;
+        }
+        carries.reverse();
+        return carries;
+      }
+
+      function computeBorrowVisual(a, b) {
+        const A = String(a).split("").map(Number);
+        const B = String(b).padStart(String(a).length, "0").split("").map(Number);
+
+        const work = A.slice();
+        const borrowMarks = Array(A.length).fill("");
+        const crossed = Array(A.length).fill(false);
+        const borrowedValue = Array(A.length).fill(null);
+
+        for (let i = A.length - 1; i >= 0; i--) {
+          if (work[i] < B[i]) {
+            let j = i - 1;
+            while (j >= 0 && work[j] === 0) {
+              j--;
+            }
+            if (j >= 0) {
+              work[j] -= 1;
+              crossed[j] = true;
+              borrowedValue[j] = work[j];
+              for (let k = j + 1; k < i; k++) {
+                work[k] += 9;
+                crossed[k] = true;
+                borrowedValue[k] = work[k];
+              }
+              work[i] += 10;
+              borrowMarks[i] = "1";
+            }
+          }
+        }
+        return { borrowMarks, crossed, borrowedValue, finalWork: work };
+      }
+
+      function generateAddQuestion(difficulty) {
+        let a, b;
+        if (difficulty === "mudah") {
+          a = rand(10, 49);
+          b = rand(10, 49);
+        } else if (difficulty === "sederhana") {
+          a = rand(30, 89);
+          b = rand(20, 79);
+        } else {
+          a = rand(120, 999);
+          b = rand(120, 999);
+        }
+        const answer = a + b;
+        const len = String(answer).length;
+        const carry = computeCarry(a, b);
+        return {
+          type: "add",
+          a, b, answer,
+          answerStr: String(answer),
+          answerDigitsRTL: String(answer).split("").reverse(),
+          maxLen: len,
+          carry,
+          uniqueKey: `add|${difficulty}|${a}|${b}`
+        };
+      }
+
+      function generateSubQuestion(difficulty) {
+        let a, b;
+        if (difficulty === "mudah") {
+          a = rand(20, 79);
+          b = rand(1, a - 1);
+        } else if (difficulty === "sederhana") {
+          a = rand(50, 199);
+          b = rand(10, a - 1);
+        } else {
+          a = rand(200, 999);
+          b = rand(100, a - 1);
+        }
+        const answer = a - b;
+        const len = String(a).length;
+        const borrow = computeBorrowVisual(a, b);
+        return {
+          type: "sub",
+          a, b, answer,
+          answerStr: String(answer),
+          answerDigitsRTL: String(answer).split("").reverse(),
+          maxLen: Math.max(String(a).length, String(b).length, String(answer).length),
+          borrow,
+          uniqueKey: `sub|${difficulty}|${a}|${b}`
+        };
+      }
+
+      function generateMulQuestion(difficulty) {
+        let a, b;
+        if (difficulty === "mudah") {
+          a = rand(2, 9);
+          b = rand(2, 9);
+        } else if (difficulty === "sederhana") {
+          a = rand(10, 99);
+          b = rand(2, 9);
+        } else {
+          a = rand(10, 99);
+          b = rand(10, 99);
+        }
+
+        const answer = a * b;
+        const partials = [];
+        const bDigitsRTL = String(b).split("").reverse().map(Number);
+        for (let i = 0; i < bDigitsRTL.length; i++) {
+          partials.push(a * bDigitsRTL[i] * Math.pow(10, i));
+        }
+
+        return {
+          type: "mul",
+          a, b, answer,
+          partials,
+          answerStr: String(answer),
+          answerDigitsRTL: String(answer).split("").reverse(),
+          maxLen: Math.max(
+            String(a).length,
+            String(b).length,
+            String(answer).length,
+            ...partials.map(p => String(p).length)
+          ),
+          uniqueKey: `mul|${difficulty}|${a}|${b}`
+        };
+      }
+
+      function buildDivisionData(dividend, divisor) {
+        const q = Math.floor(dividend / divisor);
+        const r = dividend % divisor;
+        const qDigits = String(q).split("").map(Number);
+        const dividendDigits = String(dividend).split("").map(Number);
+
+        let current = "";
+        const steps = [];
+
+        for (let i = 0; i < dividendDigits.length; i++) {
+          current += String(dividendDigits[i]);
+          let currentNum = Number(current);
+
+          if (currentNum < divisor && steps.length === 0 && i < dividendDigits.length - 1) {
+            steps.push({
+              currentNum,
+              quotientDigit: 0,
+              subtractValue: 0,
+              remainder: currentNum,
+              bringDown: dividendDigits[i + 1],
+              skip: true
+            });
+            continue;
+          }
+
+          const qd = Math.floor(currentNum / divisor);
+          const sv = qd * divisor;
+          const rem = currentNum - sv;
+          const nextDigit = i < dividendDigits.length - 1 ? dividendDigits[i + 1] : null;
+
+          steps.push({
+            currentNum,
+            quotientDigit: qd,
+            subtractValue: sv,
+            remainder: rem,
+            bringDown: nextDigit,
+            skip: false
+          });
+
+          current = String(rem);
+        }
+
+        return {
+          quotient: q,
+          remainder: r,
+          quotientDigits: String(q).split(""),
+          steps
+        };
+      }
+
+      function generateDivQuestion(difficulty) {
+        let divisor, dividend;
+        if (difficulty === "mudah") {
+          divisor = rand(2, 9);
+          const q = rand(2, 20);
+          const r = rand(0, divisor - 1);
+          dividend = divisor * q + r;
+        } else if (difficulty === "sederhana") {
+          divisor = rand(2, 9);
+          const q = rand(10, 60);
+          const r = rand(0, divisor - 1);
+          dividend = divisor * q + r;
+        } else {
+          divisor = rand(2, 12);
+          const q = rand(20, 120);
+          const r = rand(0, divisor - 1);
+          dividend = divisor * q + r;
+        }
+
+        const division = buildDivisionData(dividend, divisor);
+
+        return {
+          type: "div",
+          divisor,
+          dividend,
+          answer: division.quotient,
+          remainder: division.remainder,
+          division,
+          uniqueKey: `div|${difficulty}|${dividend}|${divisor}`
+        };
+      }
+
+      function loadQuestion() {
+        state.session.locked = false;
+        state.session.currentInput = [];
+        state.session.divisionStage = 0;
+        updateInputDisplay();
+
+        const idx = state.session.currentIndex;
+        const total = state.session.questions.length;
+        const q = state.session.questions[idx];
+        state.session.currentQuestion = q;
+
+        el.questionTitle.textContent = `Soalan ${idx + 1} daripada ${total}`;
+        el.questionSubtitle.textContent = getQuestionSubtitle(q);
+        setOperationPill(q.type);
+        el.progressBar.style.width = `${(idx / total) * 100}%`;
+
+        renderQuestion(q);
+        updateLiveHelp(q);
+      }
+
+      function getQuestionSubtitle(q) {
+        if (q.type === "add") return "Isi jawapan dari kanan ke kiri.";
+        if (q.type === "sub") return "Perhatikan bantuan pinjam di atas nombor.";
+        if (q.type === "mul") return "Darab dalam bentuk lazim menegak.";
+        return "Isi langkah bahagi secara interaktif.";
+      }
+
+      function setOperationPill(type) {
+        const topic = TOPICS.find(t => t.key === type);
+        el.operationPill.className = `operation-pill ${topic.cls}`;
+        el.operationPill.textContent = `${topic.icon} ${topic.label}`;
+      }
+
+      function renderQuestion(q) {
+        el.mathStage.innerHTML = "";
+        if (q.type === "add") renderVerticalAdd(q);
+        else if (q.type === "sub") renderVerticalSub(q);
+        else if (q.type === "mul") renderVerticalMul(q);
+        else renderDivision(q);
+      }
+
+      function createDigitCell(content, className = "") {
+        const div = document.createElement("div");
+        div.className = `digit ${className}`.trim();
+        div.textContent = content === " " ? "" : content;
+        return div;
+      }
+
+      function createTinyCell(content = "") {
+        const div = document.createElement("div");
+        div.className = "tiny-box";
+        if (!content) div.classList.add("empty");
+        div.textContent = content || "";
+        return div;
+      }
+
+      function createAnswerCell(content = "", active = false, filled = false) {
+        const div = document.createElement("div");
+        div.className = "answer-box";
+        if (active) div.classList.add("active");
+        if (filled) div.classList.add("filled");
+        div.textContent = content;
+        return div;
+      }
+
+      function renderVerticalAdd(q) {
+        const len = Math.max(String(q.a).length, String(q.b).length, String(q.answer).length);
+        const carryRow = document.createElement("div");
+        carryRow.className = "carry-row";
+        carryRow.style.gridTemplateColumns = `repeat(${len}, 52px)`;
+
+        const row1 = document.createElement("div");
+        row1.className = "num-row";
+        row1.style.gridTemplateColumns = `repeat(${len}, 52px)`;
+
+        const row2 = document.createElement("div");
+        row2.className = "num-row";
+        row2.style.gridTemplateColumns = `repeat(${len}, 52px)`;
+
+        const ansRow = document.createElement("div");
+        ansRow.className = "answer-row";
+        ansRow.style.gridTemplateColumns = `repeat(${len}, 52px)`;
+
+        const aArr = padLeftDigits(q.a, len);
+        const bArr = padLeftDigits(q.b, len);
+        const answerArr = String(q.answer).padStart(len, " ").split("");
+        const current = state.session.currentInput;
+
+        const carry = Array(len).fill("");
+        const carryComputed = computeCarry(q.a, q.b);
+        const startIndex = Math.max(0, carry.length - carryComputed.length);
+        for (let i = 0; i < carryComputed.length; i++) {
+          if (startIndex + i < carry.length) carry[startIndex + i] = carryComputed[i];
+        }
+
+        carry.forEach(c => carryRow.appendChild(createTinyCell(c)));
+        aArr.forEach(ch => row1.appendChild(createDigitCell(ch)));
+        bArr.forEach((ch, idx) => {
+          row2.appendChild(createDigitCell(idx === 0 ? `+${ch}`.trim() : ch, idx === 0 ? "operator-digit" : ""));
+        });
+
+        const ansStr = String(q.answer).padStart(len, " ").split("");
+        const filledFromRight = current.length;
+
+        for (let i = 0; i < len; i++) {
+          const fromRightIndex = len - 1 - i;
+          const isFilled = fromRightIndex >= len - filledFromRight;
+          const active = fromRightIndex === len - 1 - current.length;
+          const visible = isFilled ? ansStr[i].trim() : "";
+          ansRow.appendChild(createAnswerCell(visible, active, isFilled));
+        }
+
+        const wrap = document.createElement("div");
+        wrap.className = "vertical-math float-up";
+        wrap.appendChild(carryRow);
+        wrap.appendChild(row1);
+        wrap.appendChild(row2);
+
+        const line = document.createElement("div");
+        line.className = "line-row";
+        wrap.appendChild(line);
+
+        wrap.appendChild(ansRow);
+
+        el.mathStage.appendChild(wrap);
+
+        const note = document.createElement("div");
+        note.className = "right-to-left-note";
+        note.textContent = "Mula isi dari kotak paling kanan dahulu.";
+        el.mathStage.appendChild(note);
+      }
+
+      function renderVerticalSub(q) {
+        const len = Math.max(String(q.a).length, String(q.b).length, String(q.answer).length);
+        const carryRow = document.createElement("div");
+        carryRow.className = "carry-row";
+        carryRow.style.gridTemplateColumns = `repeat(${len}, 52px)`;
+
+        const row1 = document.createElement("div");
+        row1.className = "num-row";
+        row1.style.gridTemplateColumns = `repeat(${len}, 52px)`;
+
+        const row2 = document.createElement("div");
+        row2.className = "num-row";
+        row2.style.gridTemplateColumns = `repeat(${len}, 52px)`;
+
+        const ansRow = document.createElement("div");
+        ansRow.className = "answer-row";
+        ansRow.style.gridTemplateColumns = `repeat(${len}, 52px)`;
+
+        const aArr = String(q.a).padStart(len, " ").split("");
+        const bArr = String(q.b).padStart(len, " ").split("");
+        const current = state.session.currentInput;
+        const borrow = q.borrow.borrowMarks;
+        const crossed = q.borrow.crossed;
+        const borrowedValue = q.borrow.borrowedValue;
+
+        for (let i = 0; i < len; i++) {
+          carryRow.appendChild(createTinyCell(borrow[i] || ""));
+        }
+
+        for (let i = 0; i < len; i++) {
+          const cell = createDigitCell(aArr[i]);
+          if (crossed[i]) cell.classList.add("crossed", "borrowed");
+          if (borrowedValue[i] !== null) {
+            cell.textContent = borrowedValue[i];
+          }
+          row1.appendChild(cell);
+        }
+
+        bArr.forEach((ch, idx) => {
+          row2.appendChild(createDigitCell(idx === 0 ? `-${ch}`.trim() : ch, idx === 0 ? "operator-digit" : ""));
+        });
+
+        const ansStr = String(q.answer).padStart(len, " ").split("");
+        const filledFromRight = current.length;
+
+        for (let i = 0; i < len; i++) {
+          const fromRightIndex = len - 1 - i;
+          const isFilled = fromRightIndex >= len - filledFromRight;
+          const active = fromRightIndex === len - 1 - current.length;
+          const visible = isFilled ? ansStr[i].trim() : "";
+          ansRow.appendChild(createAnswerCell(visible, active, isFilled));
+        }
+
+        const wrap = document.createElement("div");
+        wrap.className = "vertical-math float-up";
+        wrap.appendChild(carryRow);
+        wrap.appendChild(row1);
+        wrap.appendChild(row2);
+
+        const line = document.createElement("div");
+        line.className = "line-row";
+        wrap.appendChild(line);
+
+        wrap.appendChild(ansRow);
+
+        el.mathStage.appendChild(wrap);
+
+        const help = document.createElement("div");
+        help.className = "help-box";
+        help.innerHTML = "<strong>Bantuan pinjam:</strong> Jika nombor atas lebih kecil, pinjam 1 dari sebelah kiri. Tanda merah menunjukkan proses pinjam.";
+        el.mathStage.appendChild(help);
+
+        const note = document.createElement("div");
+        note.className = "right-to-left-note";
+        note.textContent = "Isi jawapan bermula dari kanan ke kiri.";
+        el.mathStage.appendChild(note);
+      }
+
+      function renderVerticalMul(q) {
+        const len = Math.max(
+          String(q.a).length,
+          String(q.b).length,
+          String(q.answer).length,
+          ...q.partials.map(p => String(p).length)
+        );
+
+        const row1 = document.createElement("div");
+        row1.className = "num-row";
+        row1.style.gridTemplateColumns = `repeat(${len}, 52px)`;
+
+        const row2 = document.createElement("div");
+        row2.className = "num-row";
+        row2.style.gridTemplateColumns = `repeat(${len}, 52px)`;
+
+        String(q.a).padStart(len, " ").split("").forEach(ch => row1.appendChild(createDigitCell(ch)));
+        String(q.b).padStart(len, " ").split("").forEach((ch, idx) => {
+          row2.appendChild(createDigitCell(idx === 0 ? `×${ch}`.trim() : ch, idx === 0 ? "operator-digit" : ""));
+        });
+
+        const wrap = document.createElement("div");
+        wrap.className = "vertical-math float-up";
+        wrap.appendChild(row1);
+        wrap.appendChild(row2);
+
+        const line1 = document.createElement("div");
+        line1.className = "line-row";
+        wrap.appendChild(line1);
+
+        if (q.partials.length > 1) {
+          q.partials.forEach(p => {
+            const pr = document.createElement("div");
+            pr.className = "num-row";
+            pr.style.gridTemplateColumns = `repeat(${len}, 52px)`;
+            String(p).padStart(len, " ").split("").forEach(ch => {
+              pr.appendChild(createDigitCell(ch, "locked"));
+            });
+            wrap.appendChild(pr);
+          });
+
+          const line2 = document.createElement("div");
+          line2.className = "line-row";
+          wrap.appendChild(line2);
+        }
+
+        const ansRow = document.createElement("div");
+        ansRow.className = "answer-row";
+        ansRow.style.gridTemplateColumns = `repeat(${len}, 52px)`;
+
+        const current = state.session.currentInput;
+        const ansStr = String(q.answer).padStart(len, " ").split("");
+        const filledFromRight = current.length;
+
+        for (let i = 0; i < len; i++) {
+          const fromRightIndex = len - 1 - i;
+          const isFilled = fromRightIndex >= len - filledFromRight;
+          const active = fromRightIndex === len - 1 - current.length;
+          const visible = isFilled ? ansStr[i].trim() : "";
+          ansRow.appendChild(createAnswerCell(visible, active, isFilled));
+        }
+
+        wrap.appendChild(ansRow);
+        el.mathStage.appendChild(wrap);
+
+        const help = document.createElement("div");
+        help.className = "help-box";
+        help.innerHTML = "<strong>Petunjuk:</strong> Untuk darab dua digit dengan dua digit, lihat hasil darab sebahagian yang dipaparkan dan isi jawapan akhir.";
+        el.mathStage.appendChild(help);
+      }
+
+      function renderDivision(q) {
+        const wrap = document.createElement("div");
+        wrap.className = "division-wrap float-up";
+
+        const topAnswer = document.createElement("div");
+        topAnswer.className = "division-top-answer";
+
+        const quotientDigits = q.division.quotientDigits;
+        const current = state.session.currentInput;
+
+        quotientDigits.forEach((digit, i) => {
+          const box = document.createElement("div");
+          box.className = "answer-box";
+          if (i < current.length) {
+            box.textContent = current[i];
+            box.classList.add("filled");
+          }
+          if (i === current.length) box.classList.add("active");
+          topAnswer.appendChild(box);
+        });
+
+        wrap.appendChild(topAnswer);
+
+        const bracketArea = document.createElement("div");
+        bracketArea.className = "division-bracket-area";
+
+        const divisor = document.createElement("div");
+        divisor.className = "division-divisor";
+        divisor.textContent = q.divisor;
+
+        const dividendBox = document.createElement("div");
+        dividendBox.className = "division-dividend-box";
+
+        const digitsWrap = document.createElement("div");
+        digitsWrap.className = "division-digits";
+
+        String(q.dividend).split("").forEach(ch => {
+          const d = document.createElement("div");
+          d.className = "division-digit";
+          d.textContent = ch;
+          digitsWrap.appendChild(d);
+        });
+
+        dividendBox.appendChild(digitsWrap);
+        bracketArea.appendChild(divisor);
+        bracketArea.appendChild(dividendBox);
+
+        wrap.appendChild(bracketArea);
+
+        const stepArea = document.createElement("div");
+        stepArea.className = "division-step-area";
+
+        const currentStepIndex = Math.min(current.length, q.division.steps.length - 1);
+        const stepData = q.division.steps[currentStepIndex];
+
+        const stepCard = document.createElement("div");
+        stepCard.className = "division-step-card";
+
+        const title = document.createElement("div");
+        title.className = "division-step-title";
+
+        if (current.length < quotientDigits.length) {
+          title.textContent = `Langkah ${current.length + 1}: Isi digit jawapan di atas.`;
+          stepCard.appendChild(title);
+
+          const row = document.createElement("div");
+          row.className = "step-box-row";
+
+          const box = document.createElement("div");
+          box.className = "step-input-box active";
+          row.appendChild(box);
+
+          stepCard.appendChild(row);
+
+          const info = document.createElement("div");
+          info.className = "help-box";
+          const currentNum = stepData ? stepData.currentNum : q.dividend;
+          info.innerHTML = `<strong>Bimbingan:</strong> Berapa kali <strong>${q.divisor}</strong> boleh masuk ke dalam <strong>${currentNum}</strong>?`;
+          stepCard.appendChild(info);
+        } else {
+          title.textContent = `Jawapan bahagi lengkap`;
+          stepCard.appendChild(title);
+
+          const row = document.createElement("div");
+          row.className = "step-box-row";
+
+          const remBox = document.createElement("div");
+          remBox.className = "step-input-box";
+          remBox.textContent = q.remainder;
+          remBox.classList.add("filled");
+          row.appendChild(remBox);
+
+          stepCard.appendChild(row);
+
+          const info = document.createElement("div");
+          info.className = "help-box";
+          info.innerHTML = `<strong>Baki:</strong> ${q.remainder}`;
+          stepCard.appendChild(info);
+        }
+
+        stepArea.appendChild(stepCard);
+        wrap.appendChild(stepArea);
+
+        el.mathStage.appendChild(wrap);
+
+        const help = document.createElement("div");
+        help.className = "help-box";
+        help.innerHTML = "<strong>Bahagi panjang:</strong> Isi digit jawapan di bahagian atas satu demi satu. Sistem akan semak jawapan dan paparkan baki pada akhir.";
+        el.mathStage.appendChild(help);
+      }
+
+      function updateInputDisplay() {
+        const q = state.session.currentQuestion;
+        if (!q) {
+          el.inputDisplay.textContent = "_";
+          return;
+        }
+
+        if (q.type === "div") {
+          el.inputDisplay.textContent = state.session.currentInput.join("") || "_";
+        } else {
+          el.inputDisplay.textContent = state.session.currentInput.join("") || "_";
+        }
+      }
+
+      function updateLiveHelp(q) {
+        if (q.type === "add") {
+          el.liveHelp.innerHTML = "<strong>Tambah:</strong> Isi digit jawapan dari kanan ke kiri. Jika jumlah lebih 9, lihat nombor kecil carry di atas.";
+        } else if (q.type === "sub") {
+          el.liveHelp.innerHTML = "<strong>Tolak:</strong> Isi dari kanan ke kiri. Lihat bantuan pinjam jika nombor atas lebih kecil.";
+        } else if (q.type === "mul") {
+          el.liveHelp.innerHTML = "<strong>Darab:</strong> Isi jawapan akhir dalam bentuk lazim dari kanan ke kiri.";
+        } else {
+          el.liveHelp.innerHTML = "<strong>Bahagi:</strong> Isi digit jawapan di atas simbol bahagi satu demi satu.";
+        }
+      }
+
+      function handleKey(num) {
+        const q = state.session.currentQuestion;
+        if (!q) return;
+
+        if (q.type === "div") {
+          const max = q.division.quotientDigits.length;
+          if (state.session.currentInput.length >= max) return;
+          state.session.currentInput.push(num);
+          updateInputDisplay();
+          renderQuestion(q);
+          return;
+        }
+
+        const max = String(q.answer).length;
+        if (state.session.currentInput.length >= max) return;
+        state.session.currentInput.push(num);
+        updateInputDisplay();
+        renderQuestion(q);
+      }
+
+      function handleDelete() {
+        const q = state.session.currentQuestion;
+        if (!q) return;
+        state.session.currentInput.pop();
+        updateInputDisplay();
+        renderQuestion(q);
+      }
+
+      function handleSubmit() {
+        const q = state.session.currentQuestion;
+        if (!q || state.session.locked) return;
+
+        if (q.type === "div") {
+          const user = state.session.currentInput.join("");
+          const expected = String(q.answer);
+          if (user.length < expected.length) {
+            flashMessage("Isi semua digit jawapan bahagi dahulu.", false, false);
+            return;
+          }
+          checkAnswer(user === expected);
+          return;
+        }
+
+        const userRTL = state.session.currentInput.join("");
+        const expectedRTL = String(q.answer).split("").reverse().join("");
+
+        if (userRTL.length < expectedRTL.length) {
+          flashMessage("Lengkapkan semua kotak jawapan dahulu.", false, false);
+          return;
+        }
+
+        checkAnswer(userRTL === expectedRTL);
+      }
+
+      function checkAnswer(isCorrect) {
+        state.session.locked = true;
+
+        if (isCorrect) {
+          state.session.correct += 1;
+          playCorrectSound();
+          showFeedback(true);
+          launchConfetti();
+        } else {
+          state.session.wrong += 1;
+          playWrongSound();
+          showFeedback(false);
+        }
+
+        setTimeout(() => {
+          nextQuestion();
+        }, 1100);
+      }
+
+      function nextQuestion() {
+        hideFeedback();
+        state.session.currentIndex += 1;
+        if (state.session.currentIndex >= state.session.questions.length) {
+          finishSession();
+          return;
+        }
+        loadQuestion();
+      }
+
+      function finishSession() {
+        stopTimer();
+        el.progressBar.style.width = "100%";
+
+        const total = state.session.questions.length;
+        const correct = state.session.correct;
+        const wrong = state.session.wrong;
+        const percent = Math.round((correct / total) * 100);
+        const time = formatTime(state.session.elapsedSec);
+
+        el.resultCorrect.textContent = correct;
+        el.resultWrong.textContent = wrong;
+        el.resultPercent.textContent = `${percent}%`;
+        el.resultTime.textContent = time;
+
+        el.resultSummary.textContent = `Topik ${getTopicLabel(state.selection.topic)}, tahap ${state.selection.difficulty}, ${total} soalan.`;
+
+        if (percent >= 85) {
+          el.motivationBox.textContent = "Hebat! Kamu sangat cerdik!";
+        } else if (percent >= 60) {
+          el.motivationBox.textContent = "Bagus! Teruskan latihan untuk jadi lebih hebat!";
+        } else {
+          el.motivationBox.textContent = "Cuba lagi! Sedikit lagi pasti berjaya!";
+        }
+
+        showScreen("result");
+      }
+
+      function getTopicLabel(key) {
+        return TOPICS.find(t => t.key === key)?.label || key;
+      }
+
+      function showFeedback(correct) {
+        el.feedbackBox.className = `feedback-box ${correct ? "feedback-correct" : "feedback-wrong"}`;
+        el.feedbackBox.textContent = correct ? randomPraise() : "Cuba lagi!";
+        el.feedbackBanner.classList.add("show");
+      }
+
+      function hideFeedback() {
+        el.feedbackBanner.classList.remove("show");
+        el.confetti.innerHTML = "";
+      }
+
+      function flashMessage(msg, success = false, autoclose = true) {
+        el.feedbackBox.className = `feedback-box ${success ? "feedback-correct" : "feedback-wrong"}`;
+        el.feedbackBox.textContent = msg;
+        el.feedbackBanner.classList.add("show");
+        if (autoclose) {
+          setTimeout(() => hideFeedback(), 800);
+        } else {
+          setTimeout(() => hideFeedback(), 850);
+        }
+      }
+
+      function randomPraise() {
+        const list = ["Hebat!", "Bagus!", "Pandai!", "Syabas!", "Terbaik!"];
+        return list[rand(0, list.length - 1)];
+      }
+
+      function launchConfetti() {
+        el.confetti.innerHTML = "";
+        const colors = ["#5b8def", "#ffb703", "#25c281", "#ff7aa2", "#8b7cff"];
+        for (let i = 0; i < 18; i++) {
+          const piece = document.createElement("span");
+          piece.style.left = `${rand(2, 96)}%`;
+          piece.style.background = colors[rand(0, colors.length - 1)];
+          piece.style.animationDelay = `${Math.random() * 120}ms`;
+          piece.style.transform = `rotate(${rand(0, 360)}deg)`;
+          el.confetti.appendChild(piece);
+        }
+      }
+
+      function playCorrectSound() {
+        beep(700, 0.08, "square");
+        setTimeout(() => beep(930, 0.11, "triangle"), 80);
+      }
+
+      function playWrongSound() {
+        beep(280, 0.12, "sawtooth");
+        setTimeout(() => beep(180, 0.12, "sawtooth"), 100);
+      }
+
+      function beep(freq = 440, duration = 0.1, type = "sine") {
+        try {
+          const ctx = new (window.AudioContext || window.webkitAudioContext)();
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = type;
+          osc.frequency.value = freq;
+          gain.gain.value = 0.001;
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start();
+
+          gain.gain.exponentialRampToValueAtTime(0.18, ctx.currentTime + 0.01);
+          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+
+          osc.stop(ctx.currentTime + duration + 0.02);
+        } catch (e) {
+          // Silent fail for browsers blocking audio.
+        }
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>
